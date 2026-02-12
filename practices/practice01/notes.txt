@@ -8,3 +8,11 @@ a git commit is like a checkpoint in a game, it allows you to save progress of y
 git status
 git add .
 git commit -m "Answered second question"
+Third question. what is and whats the purpose of making git status?
+it allows you to check your Project status before commiting it 
+git status
+git add .
+git commit -m "Answered third question"
+
+
+
