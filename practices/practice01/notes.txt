@@ -28,6 +28,18 @@ you should use a git push
 git status
 git add .
 git commit -m "Answered sixth question"
+Commit history command:
+git log --oneline
+
+Output:6fcac32 (HEAD -> main, origin/main) answered sixth question
+424a22e answered fifth question
+6237318 answered fourth question
+9ba5cbd Answered third question
+54184b7 answered second question
+0d3a573 answered first question
+7fcd471 created first practice i think
+PS C:\Users\emima\Desktop\EDDUVAQ> 
+
 
 
 
