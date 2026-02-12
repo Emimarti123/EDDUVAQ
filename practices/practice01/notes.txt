@@ -1,0 +1,2 @@
+First question. What is a repository?
+its like a folder that can be stored either locally or in a platform like GitHub that allows you to store and versión manage a Project.
