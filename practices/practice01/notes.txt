@@ -1,2 +1,10 @@
 First question. What is a repository?
 its like a folder that can be stored either locally or in a platform like GitHub that allows you to store and versión manage a Project.
+git status
+git add .
+git commit -m "Answered first question"
+Second question. What is and whats the purpose of a git commit?
+a git commit is like a checkpoint in a game, it allows you to save progress of your Project
+git status
+git add .
+git commit -m "Answered second question"
