@@ -23,6 +23,12 @@ its a different versión of your Project that allows you to work without having 
 git status
 git add .
 git commit -m "Answered fifth question"
+Sixth question. what command should i use to upload changes to GitHub?
+you should use a git push
+git status
+git add .
+git commit -m "Answered sixth question"
+
 
 
 
