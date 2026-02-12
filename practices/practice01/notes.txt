@@ -18,7 +18,11 @@ this command allows you to review the Project commit history
 git status
 git add .
 git commit -m "Answered fourth question"
-
+fifth question. what is and whats the purpose of branches?
+its a different versión of your Project that allows you to work without having to worry about the main Branch
+git status
+git add .
+git commit -m "Answered fifth question"
 
 
 
