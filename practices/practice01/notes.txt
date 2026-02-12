@@ -13,6 +13,12 @@ it allows you to check your Project status before commiting it
 git status
 git add .
 git commit -m "Answered third question"
+Fourth question. what is and whats the purpose of a git log?
+this command allows you to review the Project commit history
+git status
+git add .
+git commit -m "Answered fourth question"
+
 
 
 
