@@ -9,26 +9,26 @@ public class CircularPlaylist {
     private int size;
     private boolean loopEnabled;
 
-    public CircularPlaylist() {
-        head = null;
-        current = null;
-        size = 0;
-        loopEnabled = false;
+        public CircularPlaylist() {
+            head = null;
+            current = null;
+            size = 0;
+            loopEnabled = false;
     }
 
-    public int getSize() {
-        return size;
+            public int getSize() {
+                return size;
     }
 
-    public boolean isLoopEnabled() {
-        return loopEnabled;
+            public boolean isLoopEnabled() {
+                return loopEnabled;
     }
 
-    public void setLoopEnabled(boolean enabled) {
-        loopEnabled = enabled;
-    }
+            public void setLoopEnabled(boolean enabled) {
+                loopEnabled = enabled;
+        }
 
-    public void toggleLoop() {
+            public void toggleLoop() {
         loopEnabled = !loopEnabled;
     }
 
@@ -36,7 +36,7 @@ public class CircularPlaylist {
         current = head;
     }
 
-    public Song getCurrentSong() {
+            public Song getCurrentSong() {
         if (current == null) {
             return null;
         }
@@ -48,7 +48,7 @@ public class CircularPlaylist {
             return;
         }
 
-        PlaylistNode newNode = new PlaylistNode(song);
+         PlaylistNode newNode = new PlaylistNode(song);
 
         if (head == null) {
             head = newNode;
@@ -58,8 +58,8 @@ public class CircularPlaylist {
             return;
         }
 
-        PlaylistNode last = head;
-        while (last.getNext() != head) {
+         PlaylistNode last = head;
+            while (last.getNext() != head) {
             last = last.getNext();
         }
 
@@ -73,9 +73,9 @@ public class CircularPlaylist {
             return null;
         }
 
-        if (loopEnabled == false) {
-            PlaylistNode last = head;
-            while (last.getNext() != head) {
+            if (loopEnabled == false) {
+             PlaylistNode last = head;
+                while (last.getNext() != head) {
                 last = last.getNext();
             }
 
@@ -88,8 +88,8 @@ public class CircularPlaylist {
         return current.getSong();
     }
 
-    public Song previousSong() {
-        if (current == null) {
+        public Song previousSong() {
+         if (current == null) {
             return null;
         }
 
@@ -97,17 +97,17 @@ public class CircularPlaylist {
             return null;
         }
 
-        PlaylistNode prev = head;
-        while (prev.getNext() != current) {
+            PlaylistNode prev = head;
+                while (prev.getNext() != current) {
             prev = prev.getNext();
         }
 
-        current = prev;
-        return current.getSong();
+            current = prev;
+                return current.getSong();
     }
 
-    public boolean removeSong(Song target) {
-        if (head == null || target == null) {
+        public boolean removeSong(Song target) {
+            if (head == null || target == null) {
             return false;
         }
 
@@ -121,8 +121,8 @@ public class CircularPlaylist {
             return false;
         }
 
-        PlaylistNode prev = null;
-        PlaylistNode temp = head;
+            PlaylistNode prev = null;
+             PlaylistNode temp = head;
 
         do {
             if (temp.getSong() == target) {
