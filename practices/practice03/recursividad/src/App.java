@@ -5,152 +5,313 @@ public class App {
     static Scanner scan = new Scanner(System.in);
     static ArrayList<Subject> mySubjects = new ArrayList<Subject>();
 
-    public static void main(String[] args) throws Exception {        
-
+    public static void main(String[] args) throws Exception {
         while (true) {
-            System.out.println("\nOption:");
-            System.out.println("1. Add Subject");
-            System.out.println("2. List Subjects");
-            System.out.println("3. Add Topic");
-            System.out.println("4. List Topics");
-            System.out.println("5. Exit");
+            showMainMenu();
 
             int option = scan.nextInt();
             scan.nextLine();
 
             switch (option) {
-                case 1:   
+                case 1:
                     addSubject();
                     break;
-                case 2:   
+                case 2:
                     listSubjects();
                     break;
                 case 3:
                     addSubjectTopic();
                     break;
-                case 4:        
-                    for (Subject sub: mySubjects) {
-                        System.out.println("======= " + sub.getName() + " =========");
-                        listTopics(sub.getTopics(), "");
-                    }
+                case 4:
+                    listAllTopics();
                     break;
-                case 5:            
-                    System.exit(0);        
-                    break;            
+                case 5:
+                    System.out.println("\nProgram finished.");
+                    System.exit(0);
+                    break;
                 default:
+                    System.out.println("\nInvalid option. Please try again.");
                     break;
             }
         }
-
     }
 
-   public static void addSubject() {
-    System.out.println("\nEnter code:");
-    String code = scan.nextLine();
+    public static void showMainMenu() {
+        System.out.println("\n==================================");
+        System.out.println("         SUBJECT ORGANIZER        ");
+        System.out.println("==================================");
+        System.out.println("1. Add Subject");
+        System.out.println("2. List Subjects");
+        System.out.println("3. Add Topic or Subtopic");
+        System.out.println("4. Show Full Syllabus");
+        System.out.println("5. Exit");
+        System.out.print("Choose an option: ");
+    }
 
-    System.out.println("Enter name:");
-    String name = scan.nextLine();
+    public static void addSubject() {
+        System.out.println("\n----------- ADD SUBJECT -----------");
 
-    mySubjects.add(new Subject(code, name));
-}
+        System.out.print("Enter subject code: ");
+        String code = scan.nextLine();
+
+        System.out.print("Enter subject name: ");
+        String name = scan.nextLine();
+
+        mySubjects.add(new Subject(code, name));
+
+        System.out.println("\nSubject added successfully.");
+        System.out.println("Saved subject: " + code + " - " + name);
+    }
 
     public static void listSubjects() {
-        System.out.println("\nSubjects:");
-        for (Subject subj: mySubjects) {
-            System.out.println(subj.getCode() + " - " + subj.getName());
+        System.out.println("\n----------- SUBJECT LIST -----------");
+
+        if (mySubjects.size() == 0) {
+            System.out.println("There are no subjects registered yet.");
+            return;
+        }
+
+        int counter = 1;
+        for (Subject subj : mySubjects) {
+            System.out.println(counter + ". " + subj.getCode() + " - " + subj.getName());
+            counter++;
         }
     }
 
     public static void addSubjectTopic() {
-        listSubjects();
+        System.out.println("\n-------- ADD TOPIC / SUBTOPIC --------");
 
-        System.out.println("\nSelect subject");        
-        String code = scan.next();
-        scan.nextLine();
-
-        Subject selected = null;
-
-        for (Subject sub: mySubjects) {
-            if (sub.getCode().equalsIgnoreCase(code)) {
-                selected = sub;
-                break;
-            }
-        }
-
-        if (selected == null) {
-            System.out.println("Subject not found");
-            addSubjectTopic();
+        if (mySubjects.size() == 0) {
+            System.out.println("There are no subjects yet.");
+            System.out.println("You need to add a subject first.");
             return;
         }
 
-        selected.addTopic(new Topic(1234, "Testing 1"));
-        selected.addTopic(new Topic(1235, "Testing 2"));
-        selected.addTopic(new Topic(1236, "Testing 3"));
-        selected.addTopic(new Topic(1237, "Testing 4"));
+        listSubjects();
 
+        System.out.print("\nWrite the subject code: ");
+        String code = scan.nextLine();
 
-        Topic test = new Topic(1238, "Testing 5");
-        Topic test1 = new Topic(1239, "Testing 5.1");
-        Topic test2 = new Topic(1239, "Testing 5.1");
-        Topic test11 = new Topic(1239, "Testing 5.1.1");
-        Topic test12 = new Topic(1239, "Testing 5.1.1");
+        Subject selected = findSubjectByCode(code);
 
-        test1.addTopic(test11);
-        test1.addTopic(test12);
+        if (selected == null) {
+            System.out.println("Subject not found.");
+            return;
+        }
 
-        test.addTopic(test1);
-        test.addTopic(test2);
+        System.out.println("\nSelected subject: " + selected.getName());
 
-        selected.addTopic(test);
+        if (selected.getTopics().size() == 0) {
+            System.out.println("This subject has no topics yet.");
+            System.out.println("The first topic will be added as a main topic.");
 
-        System.out.println("Select main topic:\n");
+            createMainTopic(selected);
+            return;
+        }
 
-        String topicNumber = "";
-        listTopics(selected.getTopics(), topicNumber);
+        System.out.println("\nWhat do you want to do?");
+        System.out.println("1. Add main topic");
+        System.out.println("2. Add subtopic");
+        System.out.println("3. Cancel");
+        System.out.print("Choose an option: ");
 
-        String selectedTopicNumber = scan.next();
+        int choice = scan.nextInt();
         scan.nextLine();
-        
-        addTopic(selected.getTopics(), topicNumber, selectedTopicNumber);
+
+        switch (choice) {
+            case 1:
+                createMainTopic(selected);
+                break;
+            case 2:
+                createSubtopic(selected);
+                break;
+            case 3:
+                System.out.println("Operation cancelled.");
+                break;
+            default:
+                System.out.println("Invalid option.");
+                break;
+        }
+    }
+
+    public static Subject findSubjectByCode(String code) {
+        for (Subject sub : mySubjects) {
+            if (sub.getCode().equalsIgnoreCase(code)) {
+                return sub;
+            }
+        }
+        return null;
+    }
+
+    public static void createMainTopic(Subject selected) {
+        System.out.println("\n----------- NEW MAIN TOPIC -----------");
+
+        System.out.print("Enter topic ID: ");
+        int topicID = scan.nextInt();
+        scan.nextLine();
+
+        System.out.print("Enter topic name: ");
+        String topicName = scan.nextLine();
+
+        selected.addTopic(new Topic(topicID, topicName));
+
+        System.out.println("\nMain topic added successfully.");
+        System.out.println("Added topic: " + topicName);
+    }
+
+    public static void createSubtopic(Subject selected) {
+        System.out.println("\n----------- CURRENT TOPICS -----------");
+        listTopics(selected.getTopics(), "");
+
+        System.out.print("\nWrite the number of the parent topic: ");
+        String selectedTopicNumber = scan.nextLine();
+
+        boolean added = addTopic(selected.getTopics(), "", selectedTopicNumber);
+
+        if (added) {
+            System.out.println("\nSubtopic added successfully.");
+        } else {
+            System.out.println("\nTopic number not found.");
+        }
+    }
+
+    public static void listAllTopics() {
+        System.out.println("\n----------- FULL SYLLABUS -----------");
+
+        if (mySubjects.size() == 0) {
+            System.out.println("There are no subjects registered yet.");
+            return;
+        }
+
+        for (Subject sub : mySubjects) {
+            System.out.println("\n==================================");
+            System.out.println("Subject: " + sub.getCode() + " - " + sub.getName());
+            System.out.println("==================================");
+
+            if (sub.getTopics().size() == 0) {
+                System.out.println("No topics yet.");
+            } else {
+                listTopics(sub.getTopics(), "");
+            }
+        }
     }
 
     public static void listTopics(ArrayList<Topic> topics, String topicNumber) {
-
         int subTopicNumber = 0;
-        for (Topic top: topics) {
-            subTopicNumber++;
-        
-            String newTopicNumber = topicNumber + subTopicNumber + ".";
-            System.out.println(newTopicNumber + " - " + top.getID() + " - " + top.getName());
 
-            if (top.geTopics().size() > 0 ) {
-                listTopics(top.geTopics(), newTopicNumber);
+        for (Topic top : topics) {
+            subTopicNumber++;
+
+            String newTopicNumber = topicNumber + subTopicNumber + ".";
+            System.out.println(newTopicNumber + " " + top.getName() + " (ID: " + top.getID() + ")");
+
+            if (top.getTopics().size() > 0) {
+                listTopics(top.getTopics(), newTopicNumber);
             }
         }
     }
 
-    public static void addTopic(ArrayList<Topic> topics, String topicNumber, String selectedTopicNumber) {
+    public static boolean addTopic(ArrayList<Topic> topics, String topicNumber, String selectedTopicNumber) {
         int subTopicNumber = 0;
-        for (Topic top: topics) {
+
+        for (Topic top : topics) {
             subTopicNumber++;
-        
+
             String newTopicNumber = topicNumber + subTopicNumber + ".";
 
             if (newTopicNumber.equals(selectedTopicNumber)) {
-                System.out.println("Enter ID:");
+                System.out.print("Enter subtopic ID: ");
                 int topicID = scan.nextInt();
-                scan.nextLine(); 
+                scan.nextLine();
 
-                System.out.println("Enter name:");
-                String topicName = scan.nextLine();            
+                System.out.print("Enter subtopic name: ");
+                String topicName = scan.nextLine();
 
                 top.addTopic(new Topic(topicID, topicName));
-                return;
+                return true;
             }
 
-            if (top.geTopics().size() > 0 ) {
-                addTopic(top.geTopics(), topicNumber, selectedTopicNumber);
+            if (top.getTopics().size() > 0) {
+                boolean found = addTopic(top.getTopics(), newTopicNumber, selectedTopicNumber);
+
+                if (found) {
+                    return true;
+                }
             }
         }
+
+        return false;
+    }
+}
+
+class Subject {
+    private String code;
+    private String name;
+    private ArrayList<Topic> topics;
+
+    public Subject(String code, String name) {
+        this.code = code;
+        this.name = name;
+        this.topics = new ArrayList<Topic>();
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public ArrayList<Topic> getTopics() {
+        return this.topics;
+    }
+
+    public void addTopic(Topic top) {
+        this.topics.add(top);
+    }
+}
+
+class Topic {
+    private int ID;
+    private String name;
+    private ArrayList<Topic> topics;
+
+    public Topic(int ID, String name) {
+        this.ID = ID;
+        this.name = name;
+        this.topics = new ArrayList<Topic>();
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public ArrayList<Topic> getTopics() {
+        return this.topics;
+    }
+
+    public void addTopic(Topic top) {
+        this.topics.add(top);
     }
 }
